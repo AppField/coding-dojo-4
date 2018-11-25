@@ -16,6 +16,7 @@ namespace TcpCommunication {
 
 		public TcpServer(string ip, int port, Action<string, bool> updateUser, Action<string> updateMessage) {
 			this.updateUser = updateUser;
+
 			this.updateMessage = updateMessage;
 
 			socket = new Socket(
@@ -31,8 +32,15 @@ namespace TcpCommunication {
 
 		private void AcceptClients(object state) {
 			while (true && clientsAccepter.IsAlive) {
-				connectedClients.Add(new ClientHandler(socket.Accept(), updateUser, updateMessage, ClientDisconnected));
+				connectedClients.Add(new ClientHandler(socket.Accept(), NewUserJoined, updateMessage, ClientDisconnected));
 			}
+		}
+
+		private void NewUserJoined(string chatName) {
+			updateUser(chatName, true);
+			string newUserMessage = string.Format("{0} has joined the chat", chatName);
+
+			updateMessage(newUserMessage);
 		}
 
 		public void SendData(string message) {
@@ -64,7 +72,6 @@ namespace TcpCommunication {
 
 		private void InformClientsAboutLeavement(string userLeft) {
 			string informMessage = String.Format("{0} has left the chat", userLeft);
-			connectedClients.ForEach(client => client.Send(informMessage));
 			updateMessage(informMessage);
 		}
 	}

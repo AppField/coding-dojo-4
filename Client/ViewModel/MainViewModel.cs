@@ -45,7 +45,7 @@ namespace CodingDojo4Client.ViewModel {
 						});
 						IsConnected = true;
 					},
-					() => ChatName != null && ChatName.Length >= 3 && !IsConnected
+					() => ChatName != null && ChatName.Length >= 1 && !IsConnected
 				);
 
 			SendCmd = new RelayCommand(
@@ -53,14 +53,18 @@ namespace CodingDojo4Client.ViewModel {
 						com.SendMessage(NewMessage);
 						NewMessage = "";
 					},
-					() => NewMessage != null && NewMessage.Length >= 3 && IsConnected
+					() => NewMessage != null && NewMessage.Length >= 1 && IsConnected
 				);
 		}
 
 		private void UpdateGui(string message) {
 			App.Current.Dispatcher.Invoke(() => {
-				string[] splitted = message.Split(':');
-				message = splitted[0].Equals(ChatName) ? "YOU: " + splitted[1] : message;
+				if (message.Equals("@quit")) {
+					message = "You've been disconnected from the server";
+				} else {
+					string[] splitted = message.Split(':');
+					message = splitted[0].Equals(ChatName) ? "YOU: " + splitted[1] : message;
+				}
 				MessagesList.Add(message);
 			});
 		}

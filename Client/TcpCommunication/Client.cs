@@ -15,8 +15,6 @@ namespace TcpCommunication {
 		private Action<string> update;
 		private Action disconnect;
 
-
-		private bool isConnected;
 		Thread receiver;
 
 		public Client(string ip, int port, Action<string> update, string chatName, Action disconnect) {
@@ -26,7 +24,6 @@ namespace TcpCommunication {
 			TcpClient tcpClient = new TcpClient();
 			tcpClient.Connect(new IPEndPoint(IPAddress.Parse(ip), port));
 			client = tcpClient.Client;
-			isConnected = true;
 
 			receiver = new Thread(ReceiveData);
 			receiver.Start();
@@ -40,7 +37,6 @@ namespace TcpCommunication {
 				message = Encoding.UTF8.GetString(buffer, 0, length);
 				update(message);
 			}
-			isConnected = false;
 			Close();
 		}
 
@@ -52,7 +48,6 @@ namespace TcpCommunication {
 
 		private void Close() {
 			client.Close();
-			isConnected = false;
 			disconnect();
 			receiver.Abort();
 		}

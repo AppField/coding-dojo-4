@@ -9,13 +9,18 @@ namespace TcpCommunication {
 		private Socket client;
 		public string chatName;
 		private byte[] buffer = new byte[512];
-		private Action<string, bool> updateUser;
+		private Action<string> updateUser;
 		private Action<string> updateMessage;
 		private Action<ClientHandler> clientDisconnected;
 		private string endCommand = "@quit";
 		Thread receiver;
 
-		public ClientHandler(Socket socket, Action<string, bool> updateUser, Action<string> updateMessage, Action<ClientHandler> clientDisconnected) {
+		public ClientHandler(
+				Socket socket,
+				Action<string> updateUser,
+				Action<string> updateMessage,
+				Action<ClientHandler> clientDisconnected
+			) {
 			client = socket;
 			this.updateUser = updateUser;
 			this.clientDisconnected = clientDisconnected;
@@ -27,17 +32,19 @@ namespace TcpCommunication {
 			// get Chat Name
 			int length = client.Receive(buffer);
 			chatName = Encoding.UTF8.GetString(buffer, 0, length);
-			updateUser(chatName, true);
+			updateUser(chatName);
 		}
 
 		private void ReceiveData(object state) {
 			while (true) {
 				int length = client.Receive(buffer);
 				string message = Encoding.UTF8.GetString(buffer, 0, length);
-				message = string.Format("{0}: {1}", chatName, message);
-				if (message.Contains(endCommand)) {
-					InitDisconnect();
-				} else updateMessage(message);
+				if (!message.Equals("")) {
+					message = string.Format("{0}: {1}", chatName, message);
+					if (message.Contains(endCommand)) {
+						InitDisconnect();
+					} else updateMessage(message);
+				}
 			}
 		}
 

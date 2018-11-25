@@ -5,8 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodingDojo4Server"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="450" Width="600" DataContext="{Binding Main, Mode=OneWay, Source={StaticResource Locator}}">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+			<Button Content="Start" Margin="10" Padding="30 10" Command="{Binding StartServerCmd}"></Button>
+			<Button Content="Stop" Margin="10" Padding="30 10" Command="{Binding StopServerCmd}"></Button>
+		</StackPanel>
+		<TabControl Grid.Row="1" Margin="10">
+			<!-- CHAT -->
+			<TabItem Header="Chat" Padding="10 5">
+				<Grid Margin="10">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="1*"/>
+						<ColumnDefinition Width="2*"/>
+					</Grid.ColumnDefinitions>
+					<Grid Margin="5">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="2*"/>
+						</Grid.RowDefinitions>
+						<TextBlock Text="Connected User:" FontWeight="Bold" Margin="0 10"></TextBlock>
+						<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Padding="5">
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<ListBox BorderThickness="0" ItemsSource="{Binding UserList}" SelectedItem="{Binding SelectedUser}"></ListBox>
+								<StackPanel Grid.Column="1" VerticalAlignment="Bottom">
+									<Button Content="Drop" Padding="5" Command="{Binding DropUserCmd}"></Button>
+								</StackPanel>
+							</Grid>
+						</Border>
+					</Grid>
+					<Grid Grid.Column="1" Margin="5">
+						<Grid.RowDefinitions>
+							<RowDefinition Height="Auto"/>
+							<RowDefinition Height="2*"/>
+						</Grid.RowDefinitions>
+						<StackPanel Orientation="Horizontal">
+							<TextBlock Text="Received Messages :" FontWeight="Bold" Margin="0 10"></TextBlock>
+							<TextBlock Text="{Binding MessageNumbers}" FontWeight="Bold" Margin="0 10"></TextBlock>
+						</StackPanel>
+
+						<Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Padding="5">
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="*"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<ListBox BorderThickness="0" ItemsSource="{Binding MessagesList}" Margin="0 0 0 35"></ListBox>
+								<StackPanel Grid.Column="1" VerticalAlignment="Bottom">
+									<Button Content="Save to log" Padding="5" Command="{Binding SaveToLogCmd}"></Button>
+								</StackPanel>
+							</Grid>
+						</Border>
+					</Grid>
+				</Grid>
+			</TabItem>
+			<TabItem Header="Logs" Padding="10 5">
+				<TextBlock>Logs</TextBlock>
+			</TabItem>
+		</TabControl>
+	</Grid>
 </Window>

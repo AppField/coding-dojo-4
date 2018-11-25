@@ -57,5 +57,10 @@ namespace TcpCommunication {
 		public void Send(string message) {
 			client.Send(Encoding.UTF8.GetBytes(message));
 		}
+		public void Close() {
+			Send(endCommand);
+			client.Close();
+			receiver.Abort();
+		}
 	}
 }

@@ -48,6 +48,7 @@ namespace TcpCommunication {
 
 		private void Close() {
 			client.Close();
+
 			disconnect();
 			receiver.Abort();
 		}

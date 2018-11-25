@@ -72,6 +72,7 @@
     </ApplicationDefinition>
     <Compile Include="TcpCommunication\ClientHandler.cs" />
     <Compile Include="TcpCommunication\TcpServer.cs" />
+    <Compile Include="ViewModel\LogViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">

@@ -50,9 +50,10 @@ namespace TcpCommunication {
 		}
 
 		public void CloseConnection() {
-			clientsAccepter.Abort();
 			socket.Close();
-			connectedClients.ForEach(client => client.InitDisconnect());
+			clientsAccepter.Abort();			
+			connectedClients.ForEach(client => client.Close());
+			connectedClients.Clear();
 		}
 
 		public void DropUser(string selectedUser) {

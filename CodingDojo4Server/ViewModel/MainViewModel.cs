@@ -48,6 +48,7 @@ namespace CodingDojo4Server.ViewModel {
 				() => {
 					isRunning = false;
 					server.CloseConnection();
+					UserList.Clear();
 				}, () => isRunning);
 
 			DropUserCmd = new RelayCommand(

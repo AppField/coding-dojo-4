@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
+using LogFileCommunication;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,21 +11,55 @@ using System.Threading.Tasks;
 namespace CodingDojo4Server.ViewModel {
 	public class LogViewModel : ViewModelBase {
 
-		public string SelectedLog { get; set; }
+		public string SelectedLog {
+			get => _selectedLog; set {
+				_selectedLog = value;
+				RaisePropertyChanged();
+			}
+		}
 
-		public ObservableCollection<string> LogsList { get; set; }
-		public ObservableCollection<string> LogsContent { get; set; }
+		public ObservableCollection<string> LogsList {
+			get => _logsList; set {
+				_logsList = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public ObservableCollection<string> LogsContent {
+			get => _logsContent; set {
+				_logsContent = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public RelayCommand ShowLogFileCmd { get; set; }
-		public RelayCommand DropLogFile { get; set; }
+		public RelayCommand DropLogFileCmd { get; set; }
+
+		private LogHandler logHandler;
+		private ObservableCollection<string> _logsContent;
+		private string _selectedLog;
+		private ObservableCollection<string> _logsList;
 
 		public LogViewModel() {
-			LogsList = new ObservableCollection<string>() {"asdf", "asdfasdf" };
-			LogsContent = new ObservableCollection<string>();
+			logHandler = new LogHandler();
+			GetLogFiles();
 
-			ShowLogFileCmd = new RelayCommand(() => throw new NotImplementedException());
+			ShowLogFileCmd = new RelayCommand(() => {
+				LogsContent = new ObservableCollection<string>(logHandler.ReadLogFile(SelectedLog));
+			}, () => SelectedLog != null);
 
-			DropLogFile = new RelayCommand(() => throw new NotImplementedException());
+			DropLogFileCmd = new RelayCommand(() => {
+				bool isLogDeleted = logHandler.DeleteLogFile(SelectedLog);
+				if (isLogDeleted) {
+					SelectedLog = null;
+					LogsList = new ObservableCollection<string>(logHandler.GetLogFiles());
+					LogsContent.Clear();
+				}
+			}, () => SelectedLog != null);
+		}
+
+		public void GetLogFiles() {
+			LogsList = new ObservableCollection<string>(logHandler.GetLogFiles());
 		}
 	}
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "CodingDojo4Server
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Client\Client.csproj", "{D9001E06-4240-483F-AD7B-BEE323A00E2D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogFileCommunication", "LogHandler\LogFileCommunication.csproj", "{92AB249B-30A9-447C-A156-A3673D903B9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D9001E06-4240-483F-AD7B-BEE323A00E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9001E06-4240-483F-AD7B-BEE323A00E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9001E06-4240-483F-AD7B-BEE323A00E2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92AB249B-30A9-447C-A156-A3673D903B9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92AB249B-30A9-447C-A156-A3673D903B9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92AB249B-30A9-447C-A156-A3673D903B9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92AB249B-30A9-447C-A156-A3673D903B9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,10 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using TcpCommunication;
 using System;
+using System.Linq;
 using System.Collections.ObjectModel;
+using LogFileCommunication;
+using System.Collections.Generic;
 
 namespace CodingDojo4Server.ViewModel {
 
@@ -25,14 +28,20 @@ namespace CodingDojo4Server.ViewModel {
 		public ObservableCollection<string> MessagesList { get; set; }
 		public string SelectedUser { get; set; }
 
-		// COMMANDS
+		// SERVER COMMANDS
 		public RelayCommand StartServerCmd { get; set; }
 		public RelayCommand StopServerCmd { get; set; }
 		public RelayCommand DropUserCmd { get; set; }
+
+
+		// LOG COMMANDS
 		public RelayCommand SaveToLogCmd { get; set; }
+
+		public LogViewModel LogVm { get; set; }
 
 
 		public MainViewModel() {
+			LogVm = new LogViewModel();
 			UserList = new ObservableCollection<string>();
 			MessagesList = new ObservableCollection<string>();
 			MessageNumbers = 0;
@@ -58,7 +67,11 @@ namespace CodingDojo4Server.ViewModel {
 				}, () => isRunning && SelectedUser != null);
 
 			SaveToLogCmd = new RelayCommand(
-				() => { }, () => isRunning);
+				() => {
+					LogHandler logHandler = new LogHandler();
+					logHandler.WriteLog(MessagesList.ToList());
+					LogVm.GetLogFiles();
+				}, () => isRunning);
 		}
 
 		private void UpdateUserGui(string user, bool isNew) {

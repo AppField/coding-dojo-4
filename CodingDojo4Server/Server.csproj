@@ -115,5 +115,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LogHandler\LogFileCommunication.csproj">
+      <Project>{92AB249B-30A9-447C-A156-A3673D903B9A}</Project>
+      <Name>LogFileCommunication</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
